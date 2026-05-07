@@ -1,4 +1,4 @@
-name: agenda_bailes_gaúchos
+name: radargaucho
 description: Agenda de Bailes Gaúchos - reservas, músicos e eventos.
 
 publish_to: 'none'
@@ -13,8 +13,6 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.6
   intl: ^0.18.1
-  shared_preferences: ^2.2.2
-  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:
@@ -23,11 +21,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/images/
-  fonts:
-    - family: Merriweather
-      fonts:
-        - asset: assets/fonts/Merriweather-Regular.ttf
-        - asset: assets/fonts/Merriweather-Bold.ttf
-          weight: 700
