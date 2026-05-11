@@ -47,7 +47,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           side: const BorderSide(color: dourado, width: 0.8),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
 
       // ── Botões ──────────────────────────────────────────────────
