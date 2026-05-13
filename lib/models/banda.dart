@@ -41,7 +41,7 @@ class Banda {
 }
 
 class BandasMock {
-  // TODO [FUTURO]: substituir esta lista por chamada a uma API REST
+  // COMMIT [FUTURO]: substituir esta lista por chamada a uma API REST
   // Future<List<Banda>> fetchBandas() async { ... }
   static const lista = [
     Banda(
