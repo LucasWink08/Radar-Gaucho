@@ -1,9 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-//  lib/widgets/evento_card.dart
-//  COMMIT 4 — Criado aqui.
-//  Depende: evento.dart (C3) ✓   app_theme.dart (C2) ✓
-//  Não importa nenhum outro widget interno.
-// ═══════════════════════════════════════════════════════════════════
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
