@@ -1,8 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════
-//  lib/screens/reserva_screen.dart
-//  COMMIT 5 — Primeira screen criada (não depende de nenhuma outra screen).
-//  Depende: evento.dart (C3) ✓   reserva.dart (C3) ✓   app_theme.dart (C2) ✓
-// ═══════════════════════════════════════════════════════════════════
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +6,7 @@ import '../models/evento.dart';
 import '../models/reserva.dart';
 import '../utils/app_theme.dart';
 
-// TODO [FUTURO]: adicionar import do campo email no TextFormField
+// COMMIT [FUTURO]: adicionar import do campo email no TextFormField
 // e passar para o Reserva quando o campo for adicionado ao model
 
 class ReservaScreen extends StatefulWidget {
@@ -30,14 +26,14 @@ class _ReservaScreenState extends State<ReservaScreen> {
   bool _termos    = false;
   bool _salvando  = false;
 
-  // TODO [FUTURO]: adicionar _emailCtrl quando o campo email for adicionado ao model
+  // COMMIT [FUTURO]: adicionar _emailCtrl quando o campo email for adicionado ao model
 
   @override
   void dispose() {
     _nomeCtrl.dispose();
     _cpfCtrl.dispose();
     _foneCtrl.dispose();
-    // TODO [FUTURO]: _emailCtrl.dispose();
+    // COMMIT [FUTURO]: _emailCtrl.dispose();
     super.dispose();
   }
 
@@ -64,14 +60,14 @@ class _ReservaScreenState extends State<ReservaScreen> {
       numeroPessoas:   _pessoas,
       numeroMesa:      ReservaRepo.proximaMesa(widget.evento.id),
       criadaEm:        DateTime.now(),
-      // TODO [FUTURO]: email: _emailCtrl.text.trim(),
+      // COMMIT [FUTURO]: email: _emailCtrl.text.trim(),
     );
 
     ReservaRepo.salvar(reserva);
     setState(() => _salvando = false);
     if (!mounted) return;
 
-    // TODO [FUTURO]: substituir SnackBar por navegação para uma
+    // COMMIT [FUTURO]: substituir SnackBar por navegação para uma
     // ConfirmacaoReservaScreen dedicada, passando a reserva como parâmetro
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: AppTheme.verdeEscuro,
@@ -191,15 +187,8 @@ class _ReservaScreenState extends State<ReservaScreen> {
                 },
               ),
 
-              // TODO [FUTURO]: adicionar campo e-mail aqui
-              // const SizedBox(height: 14),
-              // TextFormField(
-              //   controller: _emailCtrl,
-              //   decoration: const InputDecoration(
-              //       labelText: 'E-mail *', prefixIcon: Icon(Icons.email)),
-              //   keyboardType: TextInputType.emailAddress,
-              //   validator: (v) { ... },
-              // ),
+              // COMMIT [FUTURO]: adicionar campo e-mail aqui
+             
 
               // ── Contador de pessoas ──────────────────────────────
               const SizedBox(height: 20),
