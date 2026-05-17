@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // ── Paleta de cores ─────────────────────────────────────────────
+  // ── Paleta de cores
   static const Color vermelho    = Color(0xFF8B1A1A); // vinho gaúcho
   static const Color dourado     = Color(0xFFC49A2A); // poncho dourado
   static const Color marrom      = Color(0xFF5C3A1E); // couro
@@ -23,7 +23,7 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: bege,
 
-      // ── AppBar ──────────────────────────────────────────────────
+      // ── AppBar 
       appBarTheme: const AppBarTheme(
         backgroundColor: Color.fromARGB(255, 180, 179, 179),
         foregroundColor: Colors.white,
@@ -39,7 +39,7 @@ class AppTheme {
         ),
       ),
 
-      // ── Cards ───────────────────────────────────────────────────
+      // ── Cards
       cardTheme: CardThemeData(
         color:     Colors.white,
         elevation: 3,
@@ -50,7 +50,7 @@ class AppTheme {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
 
-      // ── Botões ──────────────────────────────────────────────────
+      // ── Botões 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: vermelho,
@@ -69,7 +69,7 @@ class AppTheme {
         ),
       ),
 
-      // ── Inputs ──────────────────────────────────────────────────
+      // ── Inputs 
       inputDecorationTheme: InputDecorationTheme(
         filled:    true,
         fillColor: Colors.white,
@@ -80,7 +80,7 @@ class AppTheme {
         prefixIconColor: vermelho,
       ),
 
-      // ── Tipografia ──────────────────────────────────────────────
+      // ── Tipografia 
       textTheme: const TextTheme(
         headlineMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: marrom),
         titleLarge:     TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: marrom),
@@ -90,7 +90,7 @@ class AppTheme {
         // displayLarge: TextStyle(fontFamily: 'NomeDaFonte', ...),
       ),
 
-      // ── Chips ───────────────────────────────────────────────────
+      // ── Chips
       chipTheme: ChipThemeData(
         backgroundColor: bege,
         selectedColor:   vermelho,
@@ -99,7 +99,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
 
-      // ── FAB ─────────────────────────────────────────────────────
+      // ── FAB
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: dourado,
         foregroundColor: Colors.white,

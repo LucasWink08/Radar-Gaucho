@@ -95,7 +95,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              // ── Resumo do evento ─────────────────────────────────
+              // ── Resumo do evento
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
@@ -130,7 +130,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
                   style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 14),
 
-              // ── Nome ─────────────────────────────────────────────
+              // ── Nome 
               TextFormField(
                 controller: _nomeCtrl,
                 decoration: const InputDecoration(
@@ -146,7 +146,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
               ),
               const SizedBox(height: 14),
 
-              // ── CPF ──────────────────────────────────────────────
+              // ── CPF 
               TextFormField(
                 controller: _cpfCtrl,
                 decoration: const InputDecoration(
@@ -167,7 +167,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
               ),
               const SizedBox(height: 14),
 
-              // ── Telefone ─────────────────────────────────────────
+              // ── Telefone
               TextFormField(
                 controller: _foneCtrl,
                 decoration: const InputDecoration(
@@ -190,7 +190,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
               // COMMIT [FUTURO]: adicionar campo e-mail aqui
              
 
-              // ── Contador de pessoas ──────────────────────────────
+              // ── Contador de pessoas
               const SizedBox(height: 20),
               Text('Pessoas na mesa',
                   style: Theme.of(context).textTheme.headlineMedium),
@@ -229,7 +229,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
                 ),
               ),
 
-              // ── Termos ───────────────────────────────────────────
+              // ── Termos 
               const SizedBox(height: 10),
               CheckboxListTile(
                 value: _termos,
@@ -242,7 +242,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
                         TextStyle(fontSize: 13, color: AppTheme.marrom)),
               ),
 
-              // ── Total ────────────────────────────────────────────
+         
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.all(14),
@@ -268,7 +268,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
               ),
               const SizedBox(height: 20),
 
-              // ── Botão ────────────────────────────────────────────
+              // ── Botão
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -288,8 +288,6 @@ class _ReservaScreenState extends State<ReservaScreen> {
     );
   }
 }
-
-// ── Máscaras de input ────────────────────────────────────────────────────────
 
 class _CpfMask extends TextInputFormatter {
   @override

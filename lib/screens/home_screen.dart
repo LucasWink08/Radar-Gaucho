@@ -1,6 +1,3 @@
-// Terceira screen — depende de reserva_screen e detalhe_banda_screen (já criadas).
-// Contém as 3 abas: Eventos, Bandas, Minhas Reservas.
-// Depende: todos os models ✓  todos os widgets ✓  reserva_screen ✓  detalhe_banda_screen ✓
 
 import 'package:flutter/material.dart';
 
