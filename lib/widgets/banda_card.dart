@@ -131,7 +131,7 @@ class _BandaCardState extends State<BandaCard> {
                             color: AppTheme.dourado,
                             fontWeight: FontWeight.w500)),
 
-                    // TODO [FUTURO]: exibir links de redes sociais aqui
+                    // COMMIT [FUTURO]: exibir links de redes sociais aqui
                     // quando o campo redesSociais for adicionado ao model Banda
 
                     if (widget.onVerDetalhes != null) ...[

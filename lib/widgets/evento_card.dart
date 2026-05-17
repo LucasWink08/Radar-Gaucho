@@ -1,8 +1,18 @@
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import '../models/evento.dart';
 import '../utils/app_theme.dart';
+
+String formatData(DateTime d) {
+  final dd = d.day.toString().padLeft(2, '0');
+  final mm = d.month.toString().padLeft(2, '0');
+  final yyyy = d.year.toString().padLeft(4, '0');
+  final hh = d.hour.toString().padLeft(2, '0');
+  final min = d.minute.toString().padLeft(2, '0');
+  return '$dd/$mm/$yyyy às $hh:$min';
+}
+
 
 class EventoCard extends StatelessWidget {
   final Evento evento;
@@ -18,7 +28,7 @@ class EventoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fmt = DateFormat("dd/MM/yyyy 'às' HH:mm");
+    final fmtData = formatData(evento.data);
 
     return Card(
       child: InkWell(
@@ -56,7 +66,7 @@ class EventoCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  _InfoLinha(Icons.calendar_today, fmt.format(evento.data)),
+                  _InfoLinha(Icons.calendar_today, fmtData),
                   const SizedBox(height: 4),
                   _InfoLinha(Icons.location_on, '${evento.local} · ${evento.cidade}'),
                   const SizedBox(height: 12),
@@ -84,13 +94,7 @@ class EventoCard extends StatelessWidget {
                     ],
                   ),
 
-                  // TODO [FUTURO]: exibir imagem do evento quando imagemUrl
-                  // for adicionado ao model Evento:
-                  // if (evento.imagemUrl.isNotEmpty)
-                  //   Image.network(evento.imagemUrl, height: 120, fit: BoxFit.cover),
-
-                  // TODO [FUTURO]: exibir chips das bandas que vão tocar,
-                  // buscando em BandasMock.porId(id) para cada id em evento.bandasIds
+                
                 ],
               ),
             ),

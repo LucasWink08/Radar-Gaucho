@@ -34,7 +34,7 @@ class AppTheme {
           fontWeight:    FontWeight.bold,
           color:         Colors.white,
           letterSpacing: 1.1,
-          // TODO [FUTURO]: adicionar fontFamily: 'NomeDaFonte'
+          // COMMIT [FUTURO]: adicionar fontFamily: 'NomeDaFonte'
           // após baixar a fonte e declarar no pubspec.yaml
         ),
       ),
@@ -86,7 +86,7 @@ class AppTheme {
         titleLarge:     TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: marrom),
         bodyLarge:      TextStyle(fontSize: 16, color: marrom),
         bodyMedium:     TextStyle(fontSize: 14, color: marrom),
-        // TODO [FUTURO]: após adicionar fonte ao pubspec.yaml, incluir
+        // COMMIT [FUTURO]: após adicionar fonte ao pubspec.yaml, incluir
         // displayLarge: TextStyle(fontFamily: 'NomeDaFonte', ...),
       ),
 
@@ -105,7 +105,7 @@ class AppTheme {
         foregroundColor: Colors.white,
       ),
 
-      // TODO [FUTURO]: adicionar bottomNavigationBarTheme se migrar
+      // COMMIT [FUTURO]: adicionar bottomNavigationBarTheme se migrar
       // de NavigationBar para BottomNavigationBar
     );
   }
