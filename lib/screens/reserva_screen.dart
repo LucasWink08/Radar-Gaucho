@@ -1,4 +1,8 @@
-
+// ═══════════════════════════════════════════════════════════════════
+//  lib/screens/reserva_screen.dart
+//  COMMIT 5 — Primeira screen criada (não depende de nenhuma outra screen).
+//  Depende: evento.dart (C3) ✓   reserva.dart (C3) ✓   app_theme.dart (C2) ✓
+// ═══════════════════════════════════════════════════════════════════
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +10,7 @@ import '../models/evento.dart';
 import '../models/reserva.dart';
 import '../utils/app_theme.dart';
 
-// COMMIT [FUTURO]: adicionar import do campo email no TextFormField
+// TODO [FUTURO]: adicionar import do campo email no TextFormField
 // e passar para o Reserva quando o campo for adicionado ao model
 
 class ReservaScreen extends StatefulWidget {
@@ -26,14 +30,14 @@ class _ReservaScreenState extends State<ReservaScreen> {
   bool _termos    = false;
   bool _salvando  = false;
 
-  // COMMIT [FUTURO]: adicionar _emailCtrl quando o campo email for adicionado ao model
+  // TODO [FUTURO]: adicionar _emailCtrl quando o campo email for adicionado ao model
 
   @override
   void dispose() {
     _nomeCtrl.dispose();
     _cpfCtrl.dispose();
     _foneCtrl.dispose();
-    // COMMIT [FUTURO]: _emailCtrl.dispose();
+    // TODO [FUTURO]: _emailCtrl.dispose();
     super.dispose();
   }
 
@@ -60,14 +64,14 @@ class _ReservaScreenState extends State<ReservaScreen> {
       numeroPessoas:   _pessoas,
       numeroMesa:      ReservaRepo.proximaMesa(widget.evento.id),
       criadaEm:        DateTime.now(),
-      // COMMIT [FUTURO]: email: _emailCtrl.text.trim(),
+      // TODO [FUTURO]: email: _emailCtrl.text.trim(),
     );
 
     ReservaRepo.salvar(reserva);
     setState(() => _salvando = false);
     if (!mounted) return;
 
-    // COMMIT [FUTURO]: substituir SnackBar por navegação para uma
+    // TODO [FUTURO]: substituir SnackBar por navegação para uma
     // ConfirmacaoReservaScreen dedicada, passando a reserva como parâmetro
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: AppTheme.verdeEscuro,
@@ -95,7 +99,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              // ── Resumo do evento
+              // ── Resumo do evento ─────────────────────────────────
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
@@ -130,7 +134,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
                   style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 14),
 
-              // ── Nome 
+              // ── Nome ─────────────────────────────────────────────
               TextFormField(
                 controller: _nomeCtrl,
                 decoration: const InputDecoration(
@@ -146,7 +150,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
               ),
               const SizedBox(height: 14),
 
-              // ── CPF 
+              // ── CPF ──────────────────────────────────────────────
               TextFormField(
                 controller: _cpfCtrl,
                 decoration: const InputDecoration(
@@ -167,7 +171,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
               ),
               const SizedBox(height: 14),
 
-              // ── Telefone
+              // ── Telefone ─────────────────────────────────────────
               TextFormField(
                 controller: _foneCtrl,
                 decoration: const InputDecoration(
@@ -187,10 +191,17 @@ class _ReservaScreenState extends State<ReservaScreen> {
                 },
               ),
 
-              // COMMIT [FUTURO]: adicionar campo e-mail aqui
-             
+              // TODO [FUTURO]: adicionar campo e-mail aqui
+              // const SizedBox(height: 14),
+              // TextFormField(
+              //   controller: _emailCtrl,
+              //   decoration: const InputDecoration(
+              //       labelText: 'E-mail *', prefixIcon: Icon(Icons.email)),
+              //   keyboardType: TextInputType.emailAddress,
+              //   validator: (v) { ... },
+              // ),
 
-              // ── Contador de pessoas
+              // ── Contador de pessoas ──────────────────────────────
               const SizedBox(height: 20),
               Text('Pessoas na mesa',
                   style: Theme.of(context).textTheme.headlineMedium),
@@ -229,7 +240,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
                 ),
               ),
 
-              // ── Termos 
+              // ── Termos ───────────────────────────────────────────
               const SizedBox(height: 10),
               CheckboxListTile(
                 value: _termos,
@@ -242,7 +253,7 @@ class _ReservaScreenState extends State<ReservaScreen> {
                         TextStyle(fontSize: 13, color: AppTheme.marrom)),
               ),
 
-         
+              // ── Total ────────────────────────────────────────────
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.all(14),
@@ -268,17 +279,36 @@ class _ReservaScreenState extends State<ReservaScreen> {
               ),
               const SizedBox(height: 20),
 
-              // ── Botão
+              // ── Botão (animado) ─────────────────────────────────
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _salvando ? null : _salvar,
-                  child: _salvando
-                      ? const SizedBox(
-                          height: 20, width: 20,
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2, color: Colors.white))
-                      : const Text('Confirmar Reserva'),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    switchInCurve: Curves.easeOut,
+                    switchOutCurve: Curves.easeIn,
+                    transitionBuilder: (child, anim) {
+                      return FadeTransition(
+                        opacity: anim,
+                        child: ScaleTransition(scale: anim, child: child),
+                      );
+                    },
+                    child: _salvando
+                        ? const SizedBox(
+                            key: ValueKey('loading'),
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text(
+                            key: ValueKey('confirm'),
+                            'Confirmar Reserva',
+                          ),
+                  ),
                 ),
               ),
             ],
@@ -288,6 +318,8 @@ class _ReservaScreenState extends State<ReservaScreen> {
     );
   }
 }
+
+// ── Máscaras de input ────────────────────────────────────────────────────────
 
 class _CpfMask extends TextInputFormatter {
   @override

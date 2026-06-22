@@ -112,7 +112,7 @@ class _AbaInfo extends StatelessWidget {
   }
 }
 
-
+// ── Aba 2: Gêneros
 
 class _AbaGeneros extends StatelessWidget {
   final Banda banda;

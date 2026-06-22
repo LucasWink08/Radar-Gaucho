@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../models/banda.dart';
@@ -9,6 +8,10 @@ import '../widgets/banda_card.dart';
 import '../widgets/evento_card.dart';
 import 'detalhe_banda_screen.dart';
 import 'reserva_screen.dart';
+import 'status_reserva_screen.dart';
+
+
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -56,12 +59,27 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           _AbaEventos(onReservar: () => setState(() {})),
           const _AbaBandas(),
-          _AbaReservas(onCancelar: () => setState(() {})),
+            _AbaReservas(onCancelar: () => setState(() {})),
         ],
       ),
+      floatingActionButton: _aba == 2
+          ? FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const StatusReservasScreen()),
+                );
+              },
+              icon: const Icon(Icons.analytics_outlined),
+              label: const Text('Status'),
+              backgroundColor: AppTheme.dourado,
+              foregroundColor: AppTheme.marrom,
+            )
+          : null,
     );
   }
 }
+
 
 class _AbaEventos extends StatelessWidget {
   final VoidCallback onReservar;
@@ -109,7 +127,10 @@ class _AbaEventos extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          ...EventosMock.lista.map((e) {
+          ...EventosMock.lista.asMap().entries.map((entry) {
+            final i = entry.key;
+            final e = entry.value;
+
             final mesasOcupadas = ReservaRepo.qtdReservasConfirmadas(e.id);
             final mesasDisponiveisAtuais = (e.totalMesas - mesasOcupadas).clamp(0, e.totalMesas);
 
@@ -126,17 +147,30 @@ class _AbaEventos extends StatelessWidget {
               bandasIds: e.bandasIds,
             );
 
-            return EventoCard(
-              evento: eventoAtual,
-              onTap: () {},
-              onReservar: eventoAtual.temMesa
-                  ? () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ReservaScreen(evento: eventoAtual),
-                        ),
-                      ).then((_) => onReservar())
-                  : null,
+            return TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0, end: 1),
+              duration: Duration(milliseconds: 450 + (i * 90)),
+              curve: Curves.easeOutCubic,
+              builder: (context, value, _) {
+                return Opacity(
+                  opacity: value,
+                  child: Transform.translate(
+                    offset: Offset(0, (1 - value) * 16),
+                    child: EventoCard(
+                      evento: eventoAtual,
+                      onTap: () {},
+                      onReservar: eventoAtual.temMesa
+                          ? () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ReservaScreen(evento: eventoAtual),
+                                ),
+                              ).then((_) => onReservar())
+                          : null,
+                    ),
+                  ),
+                );
+              },
             );
           }),
           const SizedBox(height: 20),
@@ -234,11 +268,11 @@ class _AbaReservas extends StatelessWidget {
   const _AbaReservas({required this.onCancelar});
 
   String _fmt(DateTime d) {
-    final dd = d.day.toString().padLeft(2, '0');
-    final mm = d.month.toString().padLeft(2, '0');
+    final dd   = d.day.toString().padLeft(2, '0');
+    final mm   = d.month.toString().padLeft(2, '0');
     final yyyy = d.year.toString().padLeft(4, '0');
-    final hh = d.hour.toString().padLeft(2, '0');
-    final min = d.minute.toString().padLeft(2, '0');
+    final hh   = d.hour.toString().padLeft(2, '0');
+    final min  = d.minute.toString().padLeft(2, '0');
     return '$dd/$mm/$yyyy $hh:$min';
   }
 
@@ -265,7 +299,7 @@ class _AbaReservas extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8, bottom: 24),
               itemCount: reservas.length,
               itemBuilder: (ctx, i) {
-                final r = reservas[i];
+                final r        = reservas[i];
                 final cancelada = r.status == StatusReserva.cancelada;
 
                 return Card(
@@ -332,4 +366,3 @@ class _AbaReservas extends StatelessWidget {
     );
   }
 }
-
