@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import '../models/banda.dart';
 import '../utils/app_theme.dart';
@@ -34,6 +35,7 @@ class DetalheBandaScreen extends StatelessWidget {
     );
   }
 }
+
 
 
 class _AbaInfo extends StatelessWidget {
@@ -87,7 +89,7 @@ class _AbaInfo extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
               decoration: BoxDecoration(
-                color: AppTheme.dourado.withOpacity(0.12),
+                color: AppTheme.dourado.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: AppTheme.dourado),
               ),
@@ -112,13 +114,13 @@ class _AbaInfo extends StatelessWidget {
   }
 }
 
-// ── Aba 2: Gêneros
+
 
 class _AbaGeneros extends StatelessWidget {
   final Banda banda;
   const _AbaGeneros({required this.banda});
 
-  // Simulação de "peso" de cada gênero na carreira da banda
+
   static const _pesos = {
     GeneroBanda.vanerao:   0.9,
     GeneroBanda.xote:      0.7,
@@ -165,7 +167,7 @@ class _AbaGeneros extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 6),
-                  
+              
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: LinearProgressIndicator(
