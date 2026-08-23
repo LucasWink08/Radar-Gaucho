@@ -39,9 +39,6 @@ class DatabaseHelper {
     String path = await getDatabasesPath();
     return openDatabase(
       join(path, 'radar_gaucho.db'),
-      // onConfigure roda antes do onCreate/onOpen — o SQLite desliga
-      // FOREIGN KEY por padrão, então é preciso ligar aqui para que a
-      // relação reservas.user_id -> users.id seja realmente validada.
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
       },
@@ -53,9 +50,7 @@ class DatabaseHelper {
               email TEXT UNIQUE NOT NULL, 
               password TEXT NOT NULL)''',
         );
-        // Tabela "reservas": relacionamento N:1 com "users" via
-        // user_id. ON DELETE CASCADE remove as reservas de um usuário
-        // automaticamente se a conta dele for excluída.
+
         await database.execute(
           '''CREATE TABLE reservas(
               id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -185,7 +180,7 @@ class DatabaseHelper {
     );
   }
 
-  // ─── Reservas (CRUD completo — tabela relacionada a users) ───────
+
 
   // CREATE
   Future<int> insertReserva(Reserva reserva) async {
@@ -214,7 +209,7 @@ class DatabaseHelper {
     return result.map((e) => Reserva.fromMap(e)).toList();
   }
 
-  // READ — apenas as reservas do usuário logado ("Minhas Reservas")
+  // READ
   Future<List<Reserva>> retrieveReservasByUser(int userId) async {
     if (kIsWeb) {
       final reservas = await retrieveReservas();
@@ -230,7 +225,7 @@ class DatabaseHelper {
     return result.map((e) => Reserva.fromMap(e)).toList();
   }
 
-  // UPDATE — atualização genérica (aceita mudanças em qualquer campo)
+  // UPDATE
   Future<int> updateReserva(Reserva reserva) async {
     if (kIsWeb) {
       final reservas = await _readWebList(_webReservasKey);
@@ -249,7 +244,7 @@ class DatabaseHelper {
     );
   }
 
-  // UPDATE — atalho específico para cancelar (só troca o status)
+ 
   Future<void> cancelarReserva(int id) async {
     if (kIsWeb) {
       final reservas = await _readWebList(_webReservasKey);
@@ -279,7 +274,7 @@ class DatabaseHelper {
     await db.delete('reservas', where: 'id = ?', whereArgs: [id]);
   }
 
-  // Próxima mesa livre para um evento (consulta apenas reservas confirmadas)
+
   Future<int> proximaMesaDisponivel(String eventoId) async {
     if (kIsWeb) {
       final reservas = await retrieveReservas();
