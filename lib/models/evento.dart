@@ -1,9 +1,13 @@
+// ═══════════════════════════════════════════════════════════════════
+//  lib/models/evento.dart
+//  COMMIT 3 — Criado aqui. Sem imports internos.
+//  bandasIds é List<String> — NÃO importa banda.dart.
+// ═══════════════════════════════════════════════════════════════════
 
-
-// COMMIT [FUTURO]: adicionar campo 'imagemUrl' para exibir banner do evento
+// TODO [FUTURO]: adicionar campo 'imagemUrl' para exibir banner do evento
 // final String imagemUrl;
 
-// COMMIT [FUTURO]: adicionar campo 'endereco' com CEP para integrar possivel mapa
+// TODO [FUTURO]: adicionar campo 'endereco' com CEP para integrar mapa
 
 class Evento {
   final String id;
@@ -17,7 +21,7 @@ class Evento {
   final int mesasDisponiveis;
   final List<String> bandasIds; // IDs das bandas — buscar em BandasMock.porId()
 
-  // COMMIT [FUTURO]: adicionar imagemUrl e endereco aqui
+  // TODO [FUTURO]: adicionar imagemUrl e endereco aqui
 
   const Evento({
     required this.id,
@@ -34,12 +38,12 @@ class Evento {
 
   bool get temMesa => mesasDisponiveis > 0;
 
-  // COMMIT [FUTURO]: adicionar copyWith para atualizar mesasDisponiveis
+  // TODO [FUTURO]: adicionar copyWith para atualizar mesasDisponiveis
   // após uma reserva ser confirmada em tempo real
 }
 
 class EventosMock {
-  // COMMIT [FUTURO]: substituir por chamada à API:
+  // TODO [FUTURO]: substituir por chamada à API:
   // static Future<List<Evento>> fetchEventos() async { ... }
   static final lista = [
     Evento(

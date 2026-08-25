@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/evento.dart';
 import '../models/reserva.dart';
+import '../services/reserva_repo.dart';
+import '../services/session_manager.dart';
 import '../utils/app_theme.dart';
-
 
 
 class ReservaScreen extends StatefulWidget {
@@ -24,14 +26,37 @@ class _ReservaScreenState extends State<ReservaScreen> {
   bool _termos    = false;
   bool _salvando  = false;
 
+  String get _pessoasKey => 'radar_gaucho_pessoas_${widget.evento.id}';
 
+  @override
+  void initState() {
+    super.initState();
+    _carregarPessoasSalvas();
+  }
+
+  Future<void> _carregarPessoasSalvas() async {
+    final prefs = await SharedPreferences.getInstance();
+    final pessoasSalvas = prefs.getInt(_pessoasKey);
+    if (!mounted || pessoasSalvas == null) return;
+    setState(() => _pessoas = pessoasSalvas.clamp(1, 10));
+  }
+
+  Future<void> _salvarPessoasSelecionadas() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_pessoasKey, _pessoas);
+  }
+
+  Future<void> _limparPessoasSalvas() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_pessoasKey);
+  }
 
   @override
   void dispose() {
     _nomeCtrl.dispose();
     _cpfCtrl.dispose();
     _foneCtrl.dispose();
-    
+
     super.dispose();
   }
 
@@ -46,30 +71,45 @@ class _ReservaScreenState extends State<ReservaScreen> {
     }
 
     setState(() => _salvando = true);
-    await Future.delayed(const Duration(milliseconds: 800));
+
+    final userId = await SessionManager.getUserId();
+    if (userId == null) {
+      if (!mounted) return;
+      setState(() => _salvando = false);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Sessão expirada. Faça login novamente.'),
+        backgroundColor: AppTheme.vermelho,
+      ));
+      return;
+    }
+
+    final numeroMesa = await ReservaRepo.proximaMesa(widget.evento.id);
+    final codigo = 'r${DateTime.now().millisecondsSinceEpoch}';
 
     final reserva = Reserva(
-      id:              'r${DateTime.now().millisecondsSinceEpoch}',
+      userId:          userId,
+      codigo:          codigo,
       eventoId:        widget.evento.id,
       nomeEvento:      widget.evento.nome,
       nomeResponsavel: _nomeCtrl.text.trim(),
       cpf:             _cpfCtrl.text.trim(),
       telefone:        _foneCtrl.text.trim(),
       numeroPessoas:   _pessoas,
-      numeroMesa:      ReservaRepo.proximaMesa(widget.evento.id),
+      numeroMesa:      numeroMesa,
       criadaEm:        DateTime.now(),
-      
+      // TODO [FUTURO]: email: _emailCtrl.text.trim(),
     );
 
-    ReservaRepo.salvar(reserva);
+    await ReservaRepo.salvar(reserva);
+    await _limparPessoasSalvas();
     setState(() => _salvando = false);
     if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: AppTheme.verdeEscuro,
       content: Text(
-        '✓ Mesa ${reserva.numeroMesa} reservada! '
-        'Código: ${reserva.id.substring(1, 9).toUpperCase()}',
+        '✓ Mesa $numeroMesa reservada! '
+        'Código: ${codigo.substring(1, 9).toUpperCase()}',
       ),
       duration: const Duration(seconds: 4),
     ));
@@ -91,14 +131,14 @@ class _ReservaScreenState extends State<ReservaScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              // ── Resumo do evento ─────────────────────────────────
+       
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppTheme.vermelho.withOpacity(0.07),
+                  color: AppTheme.vermelho.withValues(alpha: 0.07),
                   borderRadius: BorderRadius.circular(10),
                   border:
-                      Border.all(color: AppTheme.dourado.withOpacity(0.5)),
+                      Border.all(color: AppTheme.dourado.withValues(alpha: 0.5)),
                 ),
                 child: Row(children: [
                   const Icon(Icons.table_restaurant,
@@ -126,7 +166,6 @@ class _ReservaScreenState extends State<ReservaScreen> {
                   style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 14),
 
-              // ── Nome ─────────────────────────────────────────────
               TextFormField(
                 controller: _nomeCtrl,
                 decoration: const InputDecoration(
@@ -135,8 +174,9 @@ class _ReservaScreenState extends State<ReservaScreen> {
                 textCapitalization: TextCapitalization.words,
                 validator: (v) {
                   if (v == null || v.trim().isEmpty) return 'Informe o nome';
-                  if (v.trim().split(' ').length < 2)
+                  if (v.trim().split(' ').length < 2) {
                     return 'Informe nome e sobrenome';
+                  }
                   return null;
                 },
               ),
@@ -156,8 +196,9 @@ class _ReservaScreenState extends State<ReservaScreen> {
                 ],
                 validator: (v) {
                   if (v == null || v.isEmpty) return 'Informe o CPF';
-                  if (v.replaceAll(RegExp(r'\D'), '').length != 11)
+                  if (v.replaceAll(RegExp(r'\D'), '').length != 11) {
                     return 'CPF inválido';
+                  }
                   return null;
                 },
               ),
@@ -177,13 +218,23 @@ class _ReservaScreenState extends State<ReservaScreen> {
                 ],
                 validator: (v) {
                   if (v == null || v.isEmpty) return 'Informe o telefone';
-                  if (v.replaceAll(RegExp(r'\D'), '').length < 10)
+                  if (v.replaceAll(RegExp(r'\D'), '').length < 10) {
                     return 'Telefone inválido';
+                  }
                   return null;
                 },
               ),
 
-           
+              // TODO [FUTURO]: adicionar campo e-mail aqui
+              // const SizedBox(height: 14),
+              // TextFormField(
+              //   controller: _emailCtrl,
+              //   decoration: const InputDecoration(
+              //       labelText: 'E-mail *', prefixIcon: Icon(Icons.email)),
+              //   keyboardType: TextInputType.emailAddress,
+              //   validator: (v) { ... },
+              // ),
+
               // ── Contador de pessoas ──────────────────────────────
               const SizedBox(height: 20),
               Text('Pessoas na mesa',
@@ -198,7 +249,10 @@ class _ReservaScreenState extends State<ReservaScreen> {
                     children: [
                       IconButton(
                         onPressed: _pessoas > 1
-                            ? () => setState(() => _pessoas--)
+                            ? () {
+                                setState(() => _pessoas--);
+                                _salvarPessoasSelecionadas();
+                              }
                             : null,
                         icon: const Icon(Icons.remove_circle_outline,
                             size: 30),
@@ -213,7 +267,10 @@ class _ReservaScreenState extends State<ReservaScreen> {
                       const SizedBox(width: 20),
                       IconButton(
                         onPressed: _pessoas < 10
-                            ? () => setState(() => _pessoas++)
+                            ? () {
+                                setState(() => _pessoas++);
+                                _salvarPessoasSelecionadas();
+                              }
                             : null,
                         icon: const Icon(Icons.add_circle_outline, size: 30),
                         color: AppTheme.vermelho,

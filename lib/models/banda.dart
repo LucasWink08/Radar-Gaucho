@@ -1,8 +1,13 @@
+// ═══════════════════════════════════════════════════════════════════
+//  lib/models/banda.dart
+//  COMMIT 3 — Criado aqui. Sem imports internos.
+//  Criado antes de evento.dart porque evento usa bandasIds: List<String>.
+// ═══════════════════════════════════════════════════════════════════
 
-// COMMIT [FUTURO]: adicionar campo 'fotoUrl' para exibir imagem real da banda
+// TODO [FUTURO]: adicionar campo 'fotoUrl' para exibir imagem real da banda
 // final String fotoUrl;
 
-//  COMMIT [FUTURO]: adicionar campo 'redesSociais' (Map<String,String>)
+//  TODO [FUTURO]: adicionar campo 'redesSociais' (Map<String,String>)
 //  para exibir links de Instagram, YouTube etc.
 
 enum GeneroBanda { vanerao, xote, milonga, nativismo, chamame }
@@ -25,7 +30,7 @@ class Banda {
   final List<GeneroBanda> generos;
   final int anoFundacao;
 
-  // COMMIT [FUTURO]: adicionar fotoUrl e redesSociais no construtor aqui
+  // TODO [FUTURO]: adicionar fotoUrl e redesSociais no construtor aqui
 
   const Banda({
     required this.id,
@@ -41,7 +46,7 @@ class Banda {
 }
 
 class BandasMock {
-  // COMMIT [FUTURO]: substituir esta lista por chamada a uma API REST
+  // TODO [FUTURO]: substituir esta lista por chamada a uma API REST
   // Future<List<Banda>> fetchBandas() async { ... }
   static const lista = [
     Banda(

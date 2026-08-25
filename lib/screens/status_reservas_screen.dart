@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
 
 import '../models/reserva.dart';
+import '../services/reserva_repo.dart';
 import '../utils/app_theme.dart';
 
-class StatusReservasScreen extends StatelessWidget {
+class StatusReservasScreen extends StatefulWidget {
   const StatusReservasScreen({super.key});
 
   @override
+  State<StatusReservasScreen> createState() => _StatusReservasScreenState();
+}
+
+class _StatusReservasScreenState extends State<StatusReservasScreen> {
+  List<Reserva> _reservas = [];
+  bool _carregando = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregar();
+  }
+
+  Future<void> _carregar() async {
+    final reservas = await ReservaRepo.todas();
+    if (!mounted) return;
+    setState(() {
+      _reservas = reservas;
+      _carregando = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final reservas = ReservaRepo.todas;
+    final reservas = _reservas;
 
     // Cálculos (processamento)
     final confirmadas = reservas.where((r) => r.status == StatusReserva.confirmada).length;
@@ -25,13 +49,18 @@ class StatusReservasScreen extends StatelessWidget {
         duration: const Duration(milliseconds: 350),
         switchInCurve: Curves.easeOut,
         switchOutCurve: Curves.easeIn,
-        child: total == 0
+        child: _carregando
+            ? const Center(
+                key: ValueKey('loading'),
+                child: CircularProgressIndicator(color: AppTheme.vermelho),
+              )
+            : total == 0
             ? Center(
                 key: const ValueKey('empty'),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.hourglass_empty_outlined, size: 72, color: AppTheme.dourado),
+                    const Icon(Icons.hourglass_empty_outlined, size: 72, color: AppTheme.dourado),
                     const SizedBox(height: 12),
                     const Text('Nenhuma reserva ainda.',
                         style: TextStyle(fontSize: 16, color: AppTheme.marrom)),
@@ -68,7 +97,7 @@ class StatusReservasScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: AppTheme.bege,
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: AppTheme.dourado.withOpacity(0.8)),
+                                border: Border.all(color: AppTheme.dourado.withValues(alpha: 0.8)),
                               ),
                               child: FractionallySizedBox(
                                 widthFactor: percentConfirmadas,

@@ -1,6 +1,9 @@
-
-// COMMIT [FUTURO]: adicionar campo 'email' para envio de comprovante
-// final String email;
+// ═══════════════════════════════════════════════════════════════════
+//  lib/models/reserva.dart
+//  Modelo de reserva — persistido na tabela SQLite "reservas".
+//  userId é a chave estrangeira para "users" (1 usuário → N reservas).
+//  Sem imports internos.
+// ═══════════════════════════════════════════════════════════════════
 
 enum StatusReserva { confirmada, cancelada }
 
@@ -12,9 +15,11 @@ extension StatusReservaExt on StatusReserva {
 }
 
 class Reserva {
-  final String id;
+  final int? id;             // null enquanto não foi salva (AUTOINCREMENT cuida do valor real)
+  final int userId;          // FK -> users.id: dono da reserva
+  final String codigo;       // código curto exibido ao usuário (não é a chave primária)
   final String eventoId;
-  final String nomeEvento;      // salvo no ato para exibir sem precisar buscar o evento
+  final String nomeEvento;   // salvo no ato para exibir sem precisar buscar o evento
   final String nomeResponsavel;
   final String cpf;
   final String telefone;
@@ -23,10 +28,10 @@ class Reserva {
   final DateTime criadaEm;
   final StatusReserva status;
 
-  // COMMIT [FUTURO]: adicionar 'email' no construtor após adicionar o campo acima
-
   const Reserva({
-    required this.id,
+    this.id,
+    required this.userId,
+    required this.codigo,
     required this.eventoId,
     required this.nomeEvento,
     required this.nomeResponsavel,
@@ -38,49 +43,49 @@ class Reserva {
     this.status = StatusReserva.confirmada,
   });
 
+  factory Reserva.fromMap(Map<String, dynamic> map) {
+    return Reserva(
+      id: map['id'] as int?,
+      userId: map['user_id'] as int,
+      codigo: map['codigo'] as String,
+      eventoId: map['evento_id'] as String,
+      nomeEvento: map['nome_evento'] as String,
+      nomeResponsavel: map['nome_responsavel'] as String,
+      cpf: map['cpf'] as String,
+      telefone: map['telefone'] as String,
+      numeroPessoas: map['numero_pessoas'] as int,
+      numeroMesa: map['numero_mesa'] as int,
+      criadaEm: DateTime.parse(map['criada_em'] as String),
+      status: (map['status'] as String) == 'cancelada'
+          ? StatusReserva.cancelada
+          : StatusReserva.confirmada,
+    );
+  }
+
+  // Não inclui a chave 'id' quando ela é nula, para que o insert no
+  // SQLite deixe o AUTOINCREMENT gerar o valor normalmente.
+  Map<String, dynamic> toMap() {
+    final map = <String, dynamic>{
+      'user_id': userId,
+      'codigo': codigo,
+      'evento_id': eventoId,
+      'nome_evento': nomeEvento,
+      'nome_responsavel': nomeResponsavel,
+      'cpf': cpf,
+      'telefone': telefone,
+      'numero_pessoas': numeroPessoas,
+      'numero_mesa': numeroMesa,
+      'criada_em': criadaEm.toIso8601String(),
+      'status': status == StatusReserva.cancelada ? 'cancelada' : 'confirmada',
+    };
+    if (id != null) map['id'] = id;
+    return map;
+  }
+
   Reserva copyWith({StatusReserva? status}) => Reserva(
-    id: id, eventoId: eventoId, nomeEvento: nomeEvento,
-    nomeResponsavel: nomeResponsavel, cpf: cpf, telefone: telefone,
-    numeroPessoas: numeroPessoas, numeroMesa: numeroMesa, criadaEm: criadaEm,
-    status: status ?? this.status,
+    id: id, userId: userId, codigo: codigo, eventoId: eventoId,
+    nomeEvento: nomeEvento, nomeResponsavel: nomeResponsavel, cpf: cpf,
+    telefone: telefone, numeroPessoas: numeroPessoas, numeroMesa: numeroMesa,
+    criadaEm: criadaEm, status: status ?? this.status,
   );
-}
-
-class ReservaRepo {
-  // COMMIT [FUTURO]: trocar lista em memória por SharedPreferences ou SQLite:
-  // 1. Adicionar shared_preferences: ^2.2.2 no pubspec.yaml
-  // 2. Substituir _lista por leitura/escrita no disco
-  // 3. Tornar salvar() e todas async
-  static final List<Reserva> _lista = [];
-
-  static List<Reserva> get todas => List.unmodifiable(_lista);
-
-  static void salvar(Reserva r) => _lista.add(r);
-
-  static void cancelar(String id) {
-    final i = _lista.indexWhere((r) => r.id == id);
-    if (i >= 0) _lista[i] = _lista[i].copyWith(status: StatusReserva.cancelada);
-  }
-
-  static int proximaMesa(String eventoId) {
-    final ocupadas = _lista
-        .where((r) => r.eventoId == eventoId && r.status == StatusReserva.confirmada)
-        .map((r) => r.numeroMesa)
-        .toSet();
-    int m = 1;
-    while (ocupadas.contains(m)) m++;
-    return m;
-  }
-
-  static int qtdReservasConfirmadas(String eventoId) {
-    return _lista
-        .where((r) => r.eventoId == eventoId && r.status == StatusReserva.confirmada)
-        .length;
-  }
-
-  static int qtdReservasCanceladas(String eventoId) {
-    return _lista
-        .where((r) => r.eventoId == eventoId && r.status == StatusReserva.cancelada)
-        .length;
-  }
 }

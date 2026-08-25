@@ -1,4 +1,16 @@
-
+// ═══════════════════════════════════════════════════════════════════
+//  lib/widgets/banda_card.dart
+//  COMMIT 4 — Criado aqui.
+//  Depende: banda.dart (C3) ✓   app_theme.dart (C2) ✓
+//  Não importa nenhum outro widget interno.
+//
+//  Widgets diferenciais usados:
+//   • AnimatedContainer  → expande/colapsa a bio ao tocar no card
+//   • AnimatedRotation   → rotaciona a seta ao expandir
+//   • Hero               → anima o avatar ao navegar para DetalheBandaScreen
+//   • CircleAvatar       → avatar com inicial da banda
+//   • Wrap + Chip        → chips de gênero musical
+// ═══════════════════════════════════════════════════════════════════
 
 import 'package:flutter/material.dart';
 import '../models/banda.dart';
@@ -119,7 +131,7 @@ class _BandaCardState extends State<BandaCard> {
                             color: AppTheme.dourado,
                             fontWeight: FontWeight.w500)),
 
-                    // COMMIT [FUTURO]: exibir links de redes sociais aqui
+                    // TODO [FUTURO]: exibir links de redes sociais aqui
                     // quando o campo redesSociais for adicionado ao model Banda
 
                     if (widget.onVerDetalhes != null) ...[
