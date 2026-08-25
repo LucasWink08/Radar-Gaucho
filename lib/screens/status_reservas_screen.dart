@@ -34,7 +34,7 @@ class _StatusReservasScreenState extends State<StatusReservasScreen> {
   Widget build(BuildContext context) {
     final reservas = _reservas;
 
-    // Cálculos (processamento)
+ 
     final confirmadas = reservas.where((r) => r.status == StatusReserva.confirmada).length;
     final canceladas = reservas.where((r) => r.status == StatusReserva.cancelada).length;
     final total = reservas.length;
@@ -88,7 +88,6 @@ class _StatusReservasScreenState extends State<StatusReservasScreen> {
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                             const SizedBox(height: 10),
 
-                            // Barra animada usando AnimatedContainer (implícita)
                             AnimatedContainer(
                               duration: const Duration(milliseconds: 450),
                               curve: Curves.easeInOut,

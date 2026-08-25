@@ -1,10 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-//  lib/models/reserva.dart
-//  Modelo de reserva — persistido na tabela SQLite "reservas".
-//  userId é a chave estrangeira para "users" (1 usuário → N reservas).
-//  Sem imports internos.
-// ═══════════════════════════════════════════════════════════════════
-
 enum StatusReserva { confirmada, cancelada }
 
 extension StatusReservaExt on StatusReserva {
@@ -15,11 +8,11 @@ extension StatusReservaExt on StatusReserva {
 }
 
 class Reserva {
-  final int? id;             // null enquanto não foi salva (AUTOINCREMENT cuida do valor real)
-  final int userId;          // FK -> users.id: dono da reserva
-  final String codigo;       // código curto exibido ao usuário (não é a chave primária)
+  final int? id;
+  final int userId;
+  final String codigo;
   final String eventoId;
-  final String nomeEvento;   // salvo no ato para exibir sem precisar buscar o evento
+  final String nomeEvento;
   final String nomeResponsavel;
   final String cpf;
   final String telefone;
@@ -62,8 +55,6 @@ class Reserva {
     );
   }
 
-  // Não inclui a chave 'id' quando ela é nula, para que o insert no
-  // SQLite deixe o AUTOINCREMENT gerar o valor normalmente.
   Map<String, dynamic> toMap() {
     final map = <String, dynamic>{
       'user_id': userId,

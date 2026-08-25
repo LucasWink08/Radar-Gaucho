@@ -1,16 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════
-//  lib/widgets/banda_card.dart
-//  COMMIT 4 — Criado aqui.
-//  Depende: banda.dart (C3) ✓   app_theme.dart (C2) ✓
-//  Não importa nenhum outro widget interno.
-//
-//  Widgets diferenciais usados:
-//   • AnimatedContainer  → expande/colapsa a bio ao tocar no card
-//   • AnimatedRotation   → rotaciona a seta ao expandir
-//   • Hero               → anima o avatar ao navegar para DetalheBandaScreen
-//   • CircleAvatar       → avatar com inicial da banda
-//   • Wrap + Chip        → chips de gênero musical
-// ═══════════════════════════════════════════════════════════════════
+
 
 import 'package:flutter/material.dart';
 import '../models/banda.dart';
@@ -42,9 +30,7 @@ class _BandaCardState extends State<BandaCard> {
             children: [
               Row(
                 children: [
-                  // Hero: a tag 'banda-avatar-${id}' conecta este avatar
-                  // com o CircleAvatar maior em DetalheBandaScreen,
-                  // criando animação de transição suave entre as telas.
+          
                   Hero(
                     tag: 'banda-avatar-${widget.banda.id}',
                     child: CircleAvatar(
@@ -79,7 +65,6 @@ class _BandaCardState extends State<BandaCard> {
                                   ?.copyWith(color: Colors.grey[600])),
                         ]),
                         const SizedBox(height: 6),
-                        // Wrap + Chip: exibe múltiplos gêneros sem transbordar
                         Wrap(
                           spacing: 5,
                           children: widget.banda.generos
@@ -96,7 +81,6 @@ class _BandaCardState extends State<BandaCard> {
                       ],
                     ),
                   ),
-                  // AnimatedRotation: seta gira 180° ao expandir
                   AnimatedRotation(
                     turns: _expandido ? 0.5 : 0,
                     duration: const Duration(milliseconds: 250),
@@ -106,7 +90,6 @@ class _BandaCardState extends State<BandaCard> {
                 ],
               ),
 
-              // AnimatedContainer: expande suavemente para mostrar a bio
               AnimatedContainer(
                 duration: const Duration(milliseconds: 280),
                 curve: Curves.easeInOut,
@@ -130,9 +113,6 @@ class _BandaCardState extends State<BandaCard> {
                             fontSize: 12,
                             color: AppTheme.dourado,
                             fontWeight: FontWeight.w500)),
-
-                    // TODO [FUTURO]: exibir links de redes sociais aqui
-                    // quando o campo redesSociais for adicionado ao model Banda
 
                     if (widget.onVerDetalhes != null) ...[
                       const SizedBox(height: 10),

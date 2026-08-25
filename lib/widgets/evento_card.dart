@@ -1,9 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-//  lib/widgets/evento_card.dart
-//  COMMIT 4 — Criado aqui.
-//  Depende: evento.dart (C3) ✓   app_theme.dart (C2) ✓
-//  Não importa nenhum outro widget interno.
-// ═══════════════════════════════════════════════════════════════════
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +27,7 @@ class EventoCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Faixa de cor no topo: verde quando tem mesa, cinza quando esgotado
+ 
             Container(
               height: 6,
               decoration: BoxDecoration(
@@ -90,13 +84,7 @@ class EventoCard extends StatelessWidget {
                     ],
                   ),
 
-                  // TODO [FUTURO]: exibir imagem do evento quando imagemUrl
-                  // for adicionado ao model Evento:
-                  // if (evento.imagemUrl.isNotEmpty)
-                  //   Image.network(evento.imagemUrl, height: 120, fit: BoxFit.cover),
-
-                  // TODO [FUTURO]: exibir chips das bandas que vão tocar,
-                  // buscando em BandasMock.porId(id) para cada id em evento.bandasIds
+          
                 ],
               ),
             ),

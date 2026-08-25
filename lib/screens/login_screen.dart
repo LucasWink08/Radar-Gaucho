@@ -100,7 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 32),
 
-                  // ── E-mail ───────────────────────────────────────
                   TextFormField(
                     controller: _emailCtrl,
                     decoration: const InputDecoration(
@@ -120,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 14),
 
-                  // ── Senha ────────────────────────────────────────
+                  
                   TextFormField(
                     controller: _senhaCtrl,
                     decoration: InputDecoration(
@@ -143,7 +142,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  // ── Botão (animado, mesmo padrão do resto do app) ─
                   ElevatedButton(
                     onPressed: _entrando ? null : _entrar,
                     child: AnimatedSwitcher(

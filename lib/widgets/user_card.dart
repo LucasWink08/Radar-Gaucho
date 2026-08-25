@@ -1,9 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-//  lib/widgets/user_card.dart
-//  Card de usuário usado na lista de gerenciamento da aba "Conta".
-//  Depende: models/user.dart (C3) ✓   utils/app_theme.dart (C2) ✓
-//  Não importa nenhum outro widget interno.
-// ═══════════════════════════════════════════════════════════════════
 
 import 'package:flutter/material.dart';
 import '../models/user.dart';
@@ -11,7 +5,7 @@ import '../utils/app_theme.dart';
 
 class UserCard extends StatelessWidget {
   final User user;
-  final bool isCurrentUser; // exibe um selo indicando "este sou eu"
+  final bool isCurrentUser;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 

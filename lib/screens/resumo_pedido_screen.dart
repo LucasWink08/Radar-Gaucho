@@ -21,7 +21,7 @@ class _ResumoPedidoScreenState extends State<ResumoPedidoScreen> {
     super.initState();
     _totalAtual = ValueNotifier<double>(0);
 
-    // Animação simples do valor total: 0 -> total calculado
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final total = widget.evento.preco * widget.pessoas;
       _totalAtual.value = total;
@@ -54,7 +54,6 @@ class _ResumoPedidoScreenState extends State<ResumoPedidoScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Cabeçalho com gradiente
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -91,7 +90,6 @@ class _ResumoPedidoScreenState extends State<ResumoPedidoScreen> {
 
             const SizedBox(height: 16),
 
-            // Card de totais
             Card(
               elevation: 2,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -101,7 +99,7 @@ class _ResumoPedidoScreenState extends State<ResumoPedidoScreen> {
                   children: [
                     _RowValor(label: 'Total', valor: 'R\$ ${widget.pessoas == 0 ? 0 : widget.evento.preco.toStringAsFixed(2)}'),
                     const SizedBox(height: 6),
-                    // Total animado com TweenAnimationBuilder
+                
                     TweenAnimationBuilder<double>(
                       tween: Tween<double>(begin: 0, end: _total),
                       duration: const Duration(milliseconds: 700),
@@ -130,7 +128,6 @@ class _ResumoPedidoScreenState extends State<ResumoPedidoScreen> {
 
             const SizedBox(height: 16),
 
-            // Mensagem
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(

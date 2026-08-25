@@ -70,8 +70,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
       ));
       Navigator.pop(context);
     } on DatabaseException catch (e) {
-      // isUniqueConstraintError(): true quando o erro veio da coluna
-      // 'email TEXT UNIQUE' — ou seja, já existe esse e-mail cadastrado.
       final mensagem = e.isUniqueConstraintError()
           ? 'Este e-mail já está cadastrado.'
           : 'Não foi possível concluir o cadastro.';
@@ -87,10 +85,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
         backgroundColor: AppTheme.vermelho,
       ));
     } catch (e) {
-      // Qualquer erro que NÃO seja do SQLite (ex.: banco de dados não
-      // inicializado corretamente na plataforma atual) caía fora do
-      // "on DatabaseException" acima e não mostrava nada na tela —
-      // por isso parecia que o botão "não fazia nada".
       debugPrint('Erro ao cadastrar: $e');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -113,7 +107,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // ── Nome ─────────────────────────────────────────────
               TextFormField(
                 controller: _nomeCtrl,
                 decoration: const InputDecoration(
@@ -131,7 +124,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
               ),
               const SizedBox(height: 14),
 
-              // ── E-mail ───────────────────────────────────────────
               TextFormField(
                 controller: _emailCtrl,
                 decoration: const InputDecoration(
@@ -149,7 +141,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
               ),
               const SizedBox(height: 14),
 
-              // ── Senha ────────────────────────────────────────────
               TextFormField(
                 controller: _senhaCtrl,
                 decoration: InputDecoration(
@@ -174,7 +165,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
               ),
               const SizedBox(height: 14),
 
-              // ── Confirmar senha ──────────────────────────────────
               TextFormField(
                 controller: _confirmarSenhaCtrl,
                 decoration: const InputDecoration(
@@ -189,7 +179,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
               ),
               const SizedBox(height: 24),
 
-              // ── Botão (animado, mesmo padrão do resto do app) ────
               ElevatedButton(
                 onPressed: _salvando ? null : _cadastrar,
                 child: AnimatedSwitcher(

@@ -14,7 +14,6 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // ── Selo/ícone do app ──────────────────────────────────
             Container(
               padding: const EdgeInsets.all(24),
               decoration: const BoxDecoration(

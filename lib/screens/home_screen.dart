@@ -62,51 +62,48 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIcon: Icon(Icons.music_note,
                 color: AppTheme
                     .vermelho), 
-            label: 'Bandas', // Texto do destino.
+            label: 'Bandas',
           ),
           NavigationDestination(
             icon: Icon(Icons.table_restaurant_outlined,
                 color: Colors
-                    .white70), // Ícone do destino "Reservas" (não selecionado).
+                    .white70),
             selectedIcon: Icon(Icons.table_restaurant,
                 color: AppTheme
-                    .vermelho), // Ícone do destino "Reservas" (selecionado).
-            label: 'Reservas', // Texto do destino.
+                        .vermelho),
+                      label: 'Reservas',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline,
                 color: Colors
-                    .white70), // Ícone do destino "Conta" (não selecionado).
+                    .white70),
             selectedIcon: Icon(Icons.person,
                 color: AppTheme
-                    .vermelho), // Ícone do destino "Conta" (selecionado).
-            label: 'Conta', // Texto do destino.
+                        .vermelho),
+                      label: 'Conta',
           ),
         ],
         labelTextStyle: WidgetStateProperty.resolveWith((s) => TextStyle(
-              // Define estilo do label conforme o estado do widget.
               color: s.contains(WidgetState.selected)
                   ? AppTheme.dourado
-                  : Colors.white60, // Cor diferente quando selecionado.
-              fontSize: 12, // Tamanho do texto do label.
+                  : Colors.white60,
+                fontSize: 12,
               fontWeight: s.contains(WidgetState.selected)
                   ? FontWeight.bold
-                  : FontWeight.normal, // Negrito só no selecionado.
+                  : FontWeight.normal,
             )),
       ),
       body: IndexedStack(
-        // IndexedStack troca a "aba" pelo índice, mas mantém estado das abas ativas.
-        index: _aba, // Índice atual que determina qual child aparece.
+        index: _aba,
         children: [
-          // Lista de telas (widgets) para cada aba.
           _AbaEventos(
               onReservar: () => setState(
-                  () {})), // Aba 0: Eventos. Chama setState ao voltar de uma reserva.
-          const _AbaBandas(), // Aba 1: Bandas.
+              () {})),
+            const _AbaBandas(),
           _AbaReservas(
               onCancelar: () => setState(
-                  () {})), // Aba 2: Reservas. Atualiza quando cancelar.
-          const _AbaConta(), // Aba 3: Conta. Dados do usuário logado + CRUD de usuários + logout.
+              () {})),
+            const _AbaConta(),
         ],
       ),
       floatingActionButton: _aba == 2
@@ -129,18 +126,16 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _AbaEventos extends StatefulWidget {
-  // StatefulWidget: precisa guardar a ocupação de mesas (consulta async ao SQLite).
   final VoidCallback
-      onReservar; // Callback chamado após o usuário completar ou voltar da tela de reserva.
+      onReservar;
   const _AbaEventos(
-      {required this.onReservar}); // Construtor: onReservar é obrigatório.
+      {required this.onReservar});
 
   @override
   State<_AbaEventos> createState() => _AbaEventosState();
 }
 
 class _AbaEventosState extends State<_AbaEventos> {
-  // Mapa eventoId -> quantidade de reservas confirmadas (consultado no SQLite).
   Map<String, int> _ocupacao = {};
   bool _carregando = true;
 
@@ -150,8 +145,6 @@ class _AbaEventosState extends State<_AbaEventos> {
     _carregarOcupacao();
   }
 
-  // Recarrega, para cada evento mockado, quantas reservas confirmadas
-  // ele já tem — chamado na inicialização e após voltar de uma reserva.
   Future<void> _carregarOcupacao() async {
     final mapa = <String, int>{};
     for (final e in EventosMock.lista) {
@@ -166,7 +159,6 @@ class _AbaEventosState extends State<_AbaEventos> {
 
   @override
   Widget build(BuildContext context) {
-    // build: monta a UI da aba Eventos.
     if (_carregando) {
       return const Scaffold(
         body: Center(
@@ -175,69 +167,62 @@ class _AbaEventosState extends State<_AbaEventos> {
       );
     }
     return Scaffold(
-      // Scaffold individual da aba, com AppBar própria.
       appBar: AppBar(
         title: const Row(
-          // Título da AppBar composto por ícones e texto centralizados.
-          mainAxisSize: MainAxisSize
-              .min, // Row ocupa só o espaço necessário (não estica até a borda).
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.star,
                 color: AppTheme.dourado,
-                size: 16), // Estrela decorativa à esquerda do título.
-            SizedBox(width: 8), // Espaçamento entre estrela e texto.
-            Text('Radar Gaúcho'), // Texto principal da AppBar.
-            SizedBox(width: 8), // Espaçamento entre texto e estrela.
+                size: 16),
+            SizedBox(width: 8),
+            Text('Radar Gaúcho'),
+            SizedBox(width: 8),
             Icon(Icons.star,
                 color: AppTheme.dourado,
-                size: 16), // Estrela decorativa à direita do título.
+                size: 16),
           ],
         ),
       ),
       body: ListView(
-        // Lista rolável que contém o banner e os cards de eventos.
         children: [
           Container(
-            // Banner decorativo no topo da lista com gradiente.
             padding: const EdgeInsets.symmetric(
-                horizontal: 20, vertical: 18), // Espaçamento interno do banner.
+                horizontal: 20, vertical: 18),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                // Gradiente de fundo do banner.
                 colors: [
                   AppTheme.verdeEscuro,
                   AppTheme.marrom
-                ], // Cores do degradê: verde escuro → marrom.
+                ],
                 begin: Alignment
-                    .topLeft, // O gradiente começa no canto superior esquerdo.
+                    .topLeft,
                 end: Alignment
-                    .bottomRight, // E termina no canto inferior direito.
+                    .bottomRight,
               ),
             ),
             child: const Column(
-              // Coluna com dois textos dentro do banner.
               crossAxisAlignment:
-                  CrossAxisAlignment.start, // Alinha os textos à esquerda.
+                  CrossAxisAlignment.start,
               children: [
                 Text(
                   'Próximos bailes',
                   style: TextStyle(
                       color: AppTheme
-                          .dourado), // Texto do título do banner na cor dourada.
+                          .dourado),
                 ),
                 SizedBox(
-                    height: 8), // Espaçamento vertical entre os dois textos.
+                    height: 8),
                 Text(
                   'Reserve sua mesa antes que acabe!',
                   style: TextStyle(
                       color: Colors.white70,
-                      fontSize: 13), // Subtítulo em branco semitransparente.
+                      fontSize: 13),
                 ),
               ],
             ),
           ),
           const SizedBox(
-              height: 4), // Pequeno espaçamento entre o banner e os cards.
+              height: 4),
           ...EventosMock.lista.asMap().entries.map((entry) {
             final i = entry.key;
             final e = entry.value;
@@ -279,8 +264,8 @@ class _AbaEventosState extends State<_AbaEventos> {
                                       ReservaScreen(evento: eventoAtual),
                                 ),
                               ).then((_) {
-                                _carregarOcupacao(); // atualiza mesas ocupadas desta aba
-                                widget.onReservar(); // notifica a tela pai (comportamento existente)
+                                _carregarOcupacao();
+                                widget.onReservar();
                               })
                           : null,
                     ),
@@ -290,8 +275,7 @@ class _AbaEventosState extends State<_AbaEventos> {
             );
           }),
           const SizedBox(
-              height:
-                  20), // Espaçamento no final da lista para não colar no fim da tela.
+              height: 20),
         ],
       ),
     );
@@ -299,96 +283,90 @@ class _AbaEventosState extends State<_AbaEventos> {
 }
 
 class _AbaBandas extends StatefulWidget {
-  // StatefulWidget: guarda o filtro de gênero selecionado.
   const _AbaBandas();
 
   @override
   State<_AbaBandas> createState() =>
-      _AbabandasState(); // Cria o State correspondente.
+      _AbabandasState();
 }
 
 class _AbabandasState extends State<_AbaBandas> {
-  // State da aba Bandas: controla o filtro ativo.
   GeneroBanda?
-      _filtro; // Gênero selecionado para filtrar as bandas; null = exibir todas.
+      _filtro;
 
   List<Banda>
-      get _lista => // Getter: retorna a lista filtrada ou completa conforme _filtro.
+      get _lista =>
           _filtro == null
               ? BandasMock.lista
               : BandasMock.lista
                   .where((b) => b.generos.contains(_filtro))
                   .toList();
-  // Se _filtro for null, retorna todas. Senão, filtra as bandas que contêm o gênero selecionado.
 
   @override
   Widget build(BuildContext context) {
-    // build: monta a UI da aba Bandas.
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Bandas & Conjuntos')), // AppBar com título fixo.
+          title: const Text('Bandas & Conjuntos')),
       body: Column(
-        // Layout em coluna: chips de filtro no topo + lista abaixo.
         children: [
           SizedBox(
-            height: 52, // Altura fixa para a linha de filtros.
+            height: 52,
             child: ListView(
-              // Lista horizontal dos FilterChips de gênero.
               scrollDirection:
-                  Axis.horizontal, // Rolagem horizontal para os chips.
+                  Axis.horizontal,
               padding: const EdgeInsets.symmetric(
                   horizontal: 16,
-                  vertical: 8), // Margens internas da lista de chips.
+                  vertical: 8),
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                      right: 8), // Espaço à direita do chip "Todos".
+                      right: 8), 
                   child: FilterChip(
                     label: const Text(
-                        'Todos'), // Label do chip que limpa o filtro.
+                        'Todos'), 
                     selected: _filtro ==
-                        null, // Chip "Todos" aparece selecionado quando não há filtro ativo.
+                        null, 
                     onSelected: (_) => setState(() =>
-                        _filtro = null), // Selecionar "Todos" limpa o filtro.
+                        _filtro = null), 
                     selectedColor:
-                        AppTheme.vermelho, // Cor de fundo quando selecionado.
+                        AppTheme.vermelho, 
                     labelStyle: TextStyle(
                       color: _filtro == null
                           ? Colors.white
                           : AppTheme
-                              .marrom, // Texto branco quando selecionado, marrom quando não.
+                              .marrom, 
                       fontWeight: _filtro == null
                           ? FontWeight.bold
-                          : FontWeight.normal, // Negrito só quando ativo.
+                          : FontWeight.normal, 
                     ),
                     checkmarkColor:
-                        Colors.white, // Cor do ícone de check dentro do chip.
+                        Colors.white, 
                   ),
                 ),
                 ...GeneroBanda.values.map((g) {
-                  // Gera um FilterChip para cada valor do enum GeneroBanda.
+                
                   return Padding(
                     padding:
-                        const EdgeInsets.only(right: 8), // Espaço entre chips.
+                        const EdgeInsets.only(right: 8), 
                     child: FilterChip(
                       label: Text(g
-                          .label), // Exibe o nome amigável do gênero (propriedade label do enum).
+                          .label), 
                       selected: _filtro ==
-                          g, // Chip aparece selecionado se for o gênero ativo.
+                          g, 
                       onSelected: (_) => setState(() => _filtro = _filtro == g
                           ? null
-                          : g), // Toggle: seleciona ou deseleciona o gênero.
+                          : g), 
                       selectedColor:
-                          AppTheme.vermelho, // Cor de fundo quando selecionado.
+                          AppTheme.vermelho, 
                       labelStyle: TextStyle(
                         color: _filtro == g
                             ? Colors.white
                             : AppTheme
-                                .marrom, // Estilo dinâmico conforme seleção.
+                                .marrom, 
                         fontWeight:
                             _filtro == g ? FontWeight.bold : FontWeight.normal,
                       ),
-                      checkmarkColor: Colors.white, // Cor do check mark.
+                      checkmarkColor: Colors.white,
                     ),
                   );
                 }),
@@ -396,29 +374,25 @@ class _AbabandasState extends State<_AbaBandas> {
             ),
           ),
           Expanded(
-            // Expanded: ocupa todo o espaço vertical restante abaixo dos chips.
             child: _lista
-                    .isEmpty // Se a lista filtrada estiver vazia, exibe mensagem.
+                  .isEmpty
                 ? const Center(
                     child: Text('Nenhuma banda encontrada.',
                         style: TextStyle(color: AppTheme.marrom)),
                   )
                 : ListView.builder(
-                    // ListView.builder: cria os cards sob demanda (mais eficiente para listas longas).
                     padding: const EdgeInsets.only(
-                        bottom: 20), // Espaço no fim da lista.
-                    itemCount: _lista.length, // Número de itens a renderizar.
+                      bottom: 20),
+                    itemCount: _lista.length,
                     itemBuilder: (ctx, i) => BandaCard(
-                      // Função que constrói cada item da lista.
                       banda: _lista[
-                          i], // Passa a banda correspondente ao índice i.
+                          i],
                       onVerDetalhes: () => Navigator.push(
-                        // Navega para a tela de detalhe ao tocar no card.
                         ctx,
                         MaterialPageRoute(
                           builder: (_) => DetalheBandaScreen(
                               banda: _lista[
-                                  i]), // Passa a banda para a tela de detalhes.
+                                  i]),
                         ),
                       ),
                     ),
@@ -431,12 +405,10 @@ class _AbabandasState extends State<_AbaBandas> {
 }
 
 class _AbaReservas extends StatefulWidget {
-  // StatefulWidget: precisa carregar de forma assíncrona as reservas
-  // do usuário logado a partir do SQLite.
   final VoidCallback
-      onCancelar; // Callback chamado após cancelar uma reserva, para forçar rebuild na tela pai.
+      onCancelar;
   const _AbaReservas(
-      {required this.onCancelar}); // Construtor: onCancelar é obrigatório.
+      {required this.onCancelar});
 
   @override
   State<_AbaReservas> createState() => _AbaReservasState();
@@ -452,8 +424,6 @@ class _AbaReservasState extends State<_AbaReservas> {
     _carregar();
   }
 
-  // Recarrega apenas as reservas do usuário logado (SessionManager) —
-  // chamado na inicialização e após cancelar/excluir uma reserva.
   Future<void> _carregar() async {
     setState(() => _carregando = true);
     final userId = await SessionManager.getUserId();
@@ -487,10 +457,10 @@ class _AbaReservasState extends State<_AbaReservas> {
     );
     if (confirmou != true) return;
 
-    await ReservaRepo.cancelar(r.id!); // UPDATE de status (não apaga o registro)
+    await ReservaRepo.cancelar(r.id!);
     if (!mounted) return;
-    await _carregar(); // atualiza a lista local
-    widget.onCancelar(); // notifica a tela pai (comportamento existente)
+    await _carregar();
+    widget.onCancelar();
   }
 
   Future<void> _excluir(Reserva r) async {
@@ -514,116 +484,108 @@ class _AbaReservasState extends State<_AbaReservas> {
     );
     if (confirmou != true) return;
 
-    await ReservaRepo.excluir(r.id!); // DELETE definitivo
+    await ReservaRepo.excluir(r.id!);
     if (!mounted) return;
     await _carregar();
     widget.onCancelar();
   }
 
   String _fmt(DateTime d) {
-    // Método auxiliar: formata um DateTime como "dd/mm/yyyy hh:mm".
     final dd = d.day
-        .toString()
-        .padLeft(2, '0'); // Dia com zero à esquerda se necessário.
-    final mm = d.month.toString().padLeft(2, '0'); // Mês com zero à esquerda.
-    final yyyy = d.year.toString().padLeft(4, '0'); // Ano com 4 dígitos.
-    final hh = d.hour.toString().padLeft(2, '0'); // Hora com zero à esquerda.
+      .toString()
+      .padLeft(2, '0');
+    final mm = d.month.toString().padLeft(2, '0');
+    final yyyy = d.year.toString().padLeft(4, '0');
+    final hh = d.hour.toString().padLeft(2, '0');
     final min =
-        d.minute.toString().padLeft(2, '0'); // Minuto com zero à esquerda.
-    return '$dd/$mm/$yyyy $hh:$min'; // Retorna a string formatada.
+      d.minute.toString().padLeft(2, '0');
+    return '$dd/$mm/$yyyy $hh:$min';
   }
 
   @override
   Widget build(BuildContext context) {
-    // build: monta a UI da aba Reservas.
-    final reservas = _reservas; // Reservas do usuário logado, já carregadas.
+    final reservas = _reservas;
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Minhas Reservas')), // AppBar com título fixo.
+          title: const Text('Minhas Reservas')),
       body: _carregando
           ? const Center(
               child: CircularProgressIndicator(color: AppTheme.vermelho))
-          : reservas.isEmpty // Se não há reservas, exibe estado vazio.
+          : reservas.isEmpty
           ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment
-                    .center, // Centraliza o conteúdo verticalmente.
+                    .center,
                 children: [
                   Icon(Icons.table_restaurant_outlined,
                       size: 72,
-                      color: AppTheme.dourado), // Ícone grande decorativo.
-                  SizedBox(height: 12), // Espaço entre ícone e texto.
+                        color: AppTheme.dourado),
+                      SizedBox(height: 12),
                   Text('Nenhuma reserva ainda.',
                       style: TextStyle(
                           color: AppTheme.marrom,
-                          fontSize: 16)), // Mensagem principal.
-                  SizedBox(height: 4), // Espaço entre os dois textos.
+                            fontSize: 16)),
+                          SizedBox(height: 4),
                   Text('Explore os eventos e reserve uma mesa!',
                       style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 13)), // Mensagem secundária.
+                          fontSize: 13)),
                 ],
               ),
             )
           : ListView.builder(
-              // Lista as reservas existentes.
               padding: const EdgeInsets.only(
-                  top: 8, bottom: 24), // Espaçamento interno da lista.
-              itemCount: reservas.length, // Número de reservas a exibir.
+                  top: 8, bottom: 24),
+                itemCount: reservas.length,
               itemBuilder: (ctx, i) {
-                // Constrói cada item da lista.
-                final r = reservas[i]; // Reserva atual.
+                final r = reservas[i];
                 final cancelada = r.status ==
                     StatusReserva
-                        .cancelada; // Verifica se a reserva está cancelada.
+                        .cancelada;
 
                 return Card(
-                  // Card visual para cada reserva.
                   margin: const EdgeInsets.symmetric(
                       horizontal: 16,
-                      vertical: 6), // Margem horizontal e vertical do card.
+                      vertical: 6),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 8), // Espaçamento interno do ListTile.
+                        vertical: 8),
                     leading: CircleAvatar(
-                      // Avatar circular com o número da mesa.
                       backgroundColor: cancelada
                           ? Colors.grey
                           : AppTheme
-                              .vermelho, // Cinza se cancelada, vermelho se ativa.
+                              .vermelho,
                       child: Text(
-                        '${r.numeroMesa}', // Exibe o número da mesa dentro do avatar.
+                        '${r.numeroMesa}',
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                     title: Text(
-                      r.nomeEvento, // Nome do evento como título do ListTile.
+                      r.nomeEvento,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, color: AppTheme.marrom),
                     ),
                     subtitle: Column(
-                      // Subtítulo com nome, número de pessoas e data.
                       crossAxisAlignment:
-                          CrossAxisAlignment.start, // Alinha à esquerda.
+                          CrossAxisAlignment.start,
                       children: [
                         Text(
-                            '${r.nomeResponsavel} · ${r.numeroPessoas} pessoa(s)'), // Nome e quantidade de pessoas.
+                            '${r.nomeResponsavel} · ${r.numeroPessoas} pessoa(s)'),
                         Text(
                           _fmt(r
-                              .criadaEm), // Data formatada de criação da reserva.
+                              .criadaEm),
                           style: const TextStyle(
                               fontSize: 11,
-                              color: Colors.grey), // Texto menor e em cinza.
+                              color: Colors.grey),
                         ),
                       ],
                     ),
                     trailing:
-                        cancelada // Lado direito do ListTile: chip "Cancelada" + excluir, ou botão de cancelar.
+                        cancelada
                             ? Row(
-                                // Se já cancelada: chip informativo + opção de excluir de vez (DELETE real).
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   const Chip(
@@ -643,10 +605,9 @@ class _AbaReservasState extends State<_AbaReservas> {
                                 ],
                               )
                             : IconButton(
-                                // Se ativa, exibe botão de cancelamento.
                                 icon: const Icon(Icons.cancel_outlined,
                                     color: Colors
-                                        .red), // Ícone de cancelar em vermelho.
+                                        .red),
                                 onPressed: () => _cancelar(r),
                               ),
                   ),
@@ -658,7 +619,6 @@ class _AbaReservasState extends State<_AbaReservas> {
 }
 
 class _AbaConta extends StatefulWidget {
-  // StatefulWidget: carrega usuário logado + lista de usuários do SQLite.
   const _AbaConta();
 
   @override
@@ -666,10 +626,10 @@ class _AbaConta extends StatefulWidget {
 }
 
 class _AbaContaState extends State<_AbaConta> {
-  int? _meuId; // id do usuário logado, obtido do SessionManager.
+  int? _meuId;
   User?
-      _meuUsuario; // dados completos do usuário logado, obtidos do DatabaseHelper.
-  List<User> _usuarios = []; // lista de todos os usuários cadastrados.
+        _meuUsuario;
+      List<User> _usuarios = [];
   bool _carregando = true;
 
   @override
@@ -678,8 +638,6 @@ class _AbaContaState extends State<_AbaConta> {
     _carregar();
   }
 
-  // Recarrega o usuário logado e a lista completa de usuários — chamado
-  // na inicialização e após qualquer inserção/edição/exclusão.
   Future<void> _carregar() async {
     setState(() => _carregando = true);
 
@@ -721,7 +679,6 @@ class _AbaContaState extends State<_AbaConta> {
     await SessionManager.logout();
     if (!mounted) return;
 
-    // pushAndRemoveUntil: limpa toda a pilha, impedindo voltar para a Home sem sessão.
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (_) => const LoginScreen()),
@@ -731,13 +688,11 @@ class _AbaContaState extends State<_AbaConta> {
 
   Future<void> _editarUsuario(User usuario) async {
     final atualizado = await showUserFormDialog(context, user: usuario);
-    if (atualizado == null) return; // usuário cancelou o dialog
+    if (atualizado == null) return;
 
     try {
       await DatabaseHelper.instance.updateUser(atualizado);
 
-      // Se o usuário editado é o usuário logado, atualiza o e-mail
-      // salvo na sessão para manter tudo consistente.
       if (atualizado.id == _meuId) {
         await SessionManager.updateSessionEmail(atualizado.email);
       }
@@ -782,8 +737,6 @@ class _AbaContaState extends State<_AbaConta> {
     await DatabaseHelper.instance.deleteUser(usuario.id!);
     if (!mounted) return;
 
-    // Se o usuário excluiu a própria conta, a sessão fica inválida:
-    // encerra a sessão e volta para o Login em vez de recarregar a aba.
     if (usuario.id == _meuId) {
       await SessionManager.logout();
       if (!mounted) return;
@@ -834,7 +787,6 @@ class _AbaContaState extends State<_AbaConta> {
               child: ListView(
                 padding: const EdgeInsets.only(bottom: 24),
                 children: [
-                  // ── Card do usuário logado ─────────────────────────
                   if (_meuUsuario != null)
                     Container(
                       margin: const EdgeInsets.fromLTRB(16, 16, 16, 4),
@@ -885,7 +837,6 @@ class _AbaContaState extends State<_AbaConta> {
                       ),
                     ),
 
-                  // ── Cabeçalho da lista de usuários ─────────────────
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text('Usuários cadastrados',

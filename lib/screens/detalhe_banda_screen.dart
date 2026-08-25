@@ -49,7 +49,7 @@ class _AbaInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Hero: conecta ao CircleAvatar do BandaCard
+         
           Center(
             child: Hero(
               tag: 'banda-avatar-${banda.id}',
