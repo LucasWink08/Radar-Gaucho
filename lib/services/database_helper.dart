@@ -39,6 +39,7 @@ class DatabaseHelper {
     String path = await getDatabasesPath();
     return openDatabase(
       join(path, 'radar_gaucho.db'),
+  
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
       },
@@ -197,7 +198,7 @@ class DatabaseHelper {
     return await db.insert('reservas', reserva.toMap());
   }
 
-  // READ — todas as reservas (usado no dashboard de status, que é global)
+  // READ
   Future<List<Reserva>> retrieveReservas() async {
     if (kIsWeb) {
       final reservas = await _readWebList(_webReservasKey);
@@ -225,7 +226,7 @@ class DatabaseHelper {
     return result.map((e) => Reserva.fromMap(e)).toList();
   }
 
-  // UPDATE
+  // UPDATE 
   Future<int> updateReserva(Reserva reserva) async {
     if (kIsWeb) {
       final reservas = await _readWebList(_webReservasKey);
@@ -244,7 +245,7 @@ class DatabaseHelper {
     );
   }
 
- 
+  // UPDATE
   Future<void> cancelarReserva(int id) async {
     if (kIsWeb) {
       final reservas = await _readWebList(_webReservasKey);
@@ -262,7 +263,7 @@ class DatabaseHelper {
     );
   }
 
-  // DELETE — remove a reserva permanentemente (diferente de cancelar)
+  // DELETE 
   Future<void> deleteReserva(int id) async {
     if (kIsWeb) {
       final reservas = await _readWebList(_webReservasKey);
